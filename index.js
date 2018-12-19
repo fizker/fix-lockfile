@@ -1,7 +1,7 @@
 // @flow
 require('@babel/register')
 
-type Package = {|
+export type Package = {|
 	version: string,
 	integrity: string,
 	resolved: string,
@@ -11,7 +11,7 @@ type Package = {|
 	dependencies?: { [string]: Package },
 |}
 
-type Lockfile = {
+export type Lockfile = {
 	name: string,
 	version: string,
 	lockfileVersion: number,
