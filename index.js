@@ -1,4 +1,5 @@
 // @flow
+require('@babel/register')
 
 type Package = {|
 	version: string,
