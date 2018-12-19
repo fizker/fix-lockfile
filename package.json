@@ -1,0 +1,22 @@
+{
+  "name": "fix-shrinkwrap",
+  "version": "0.0.1",
+  "description": "A tool for fixing some of the worst of the npm shrinkwrap noise",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "flow-bin": "^0.89.0",
+    "mocha": "^5.2.0"
+  },
+  "keywords": [
+    "npm",
+    "shrinkwrap",
+    "package-lock"
+  ],
+  "author": "Benjamin Horsleben",
+  "license": "WTFPL"
+}
