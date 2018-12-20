@@ -1,11 +1,6 @@
 // @flow
 
-import type { Lockfile, Package } from '../index'
-
-export type Diff = {
-	path: $ReadOnlyArray<string>,
-	integrityOnly: boolean,
-}
+import type { Lockfile, Package, Diff } from './types'
 
 export default function(a:Lockfile, b:Lockfile) : $ReadOnlyArray<Diff> {
 	return getDepDiff([], a.dependencies, b.dependencies)

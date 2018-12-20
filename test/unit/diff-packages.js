@@ -4,7 +4,7 @@ import { expect } from 'chai'
 
 import diff from '../../src/diff-packages'
 
-import type { Lockfile, Package } from '../../index'
+import type { Lockfile, Package } from '../../src/types'
 
 describe('unit/diff-packages.js', () => {
 	describe('diffing two equal trees (A -> A)', () => {
