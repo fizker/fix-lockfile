@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 
 import type { Lockfile, Package, Diff } from './types'
 
