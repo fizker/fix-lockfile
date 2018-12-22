@@ -8,4 +8,7 @@ try {
 	run = require('./dist/run').default
 }
 
-module.exports = run
+var file = process.argv[2]
+
+run(file)
+.catch(console.error)

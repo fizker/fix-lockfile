@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A tool for fixing some of the worst of the npm shrinkwrap noise",
   "main": "index.js",
+  "bin": "./cli.js",
   "scripts": {
     "test": "mocha",
     "build": "rm -rf dist && babel src -d dist",
