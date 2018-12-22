@@ -1,9 +1,13 @@
-// @flow
-require('@babel/register')
+let run
+try {
+	require('@babel/register')
+	run = require('./src/run').default
+} catch(e) {
+	run = require('./dist/run').default
+}
 
 const [ , , file ] = process.argv
 
-const run = require('./src/run').default
 run(file)
 .then(() => console.log('done'))
 .catch(console.error)

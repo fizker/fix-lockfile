@@ -4,10 +4,12 @@
   "description": "A tool for fixing some of the worst of the npm shrinkwrap noise",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "babel src -d dist"
   },
   "dependencies": {},
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-flow": "^7.0.0",
