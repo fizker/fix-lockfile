@@ -1,0 +1,5 @@
+.flowconfig
+.babelrc
+flow-typed/
+src/
+test/
