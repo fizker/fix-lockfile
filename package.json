@@ -1,5 +1,5 @@
 {
-  "name": "fix-shrinkwrap",
+  "name": "@fizker/fix-lockfile",
   "version": "0.0.1",
   "description": "A tool for fixing some of the worst of the npm shrinkwrap noise",
   "main": "index.js",
@@ -24,7 +24,12 @@
   "keywords": [
     "npm",
     "shrinkwrap",
-    "package-lock"
+    "npm-shrinkwrap",
+    "package-lock",
+    "lockfile",
+    "merge",
+    "conflict",
+    "merge-conflict"
   ],
   "author": "Benjamin Horsleben",
   "license": "WTFPL"
