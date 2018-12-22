@@ -9,5 +9,4 @@ try {
 const [ , , file ] = process.argv
 
 run(file)
-.then(() => console.log('done'))
 .catch(console.error)
