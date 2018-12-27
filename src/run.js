@@ -6,10 +6,13 @@ import restoreLockfile from './restore-lockfile'
 import diffPackages from './diff-packages'
 
 export default async function(filePath:string) : Promise<void> {
-	const { current, original } = await readFiles(filePath)
+	const { current, original, lineEnding } = await readFiles(filePath)
 	const diffs = diffPackages(original, current)
 	const updated = restoreLockfile({ current, original, diffs })
 
-	const json = JSON.stringify(updated, null, 2)
-	await fs.writeFile(filePath, json + '\n')
+	const json = JSON.stringify(updated, null, 2) + '\n'
+
+	const normalizedLineEndings = json.replace(/\n/g, lineEnding)
+
+	await fs.writeFile(filePath, normalizedLineEndings)
 }
