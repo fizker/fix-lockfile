@@ -54,12 +54,12 @@ describe('unit/restore-lockfile.js', () => {
 					"a": {
 						version: "1",
 						integrity: "a",
-						resolved: "http://a/1",
+						resolved: "https://registry.npmjs.org/a/-/1",
 					},
 					"b": {
 						version: "2",
 						integrity: "b2",
-						resolved: "http://b/2",
+						resolved: "https://registry.npmjs.org/b/-/2",
 						requires: {
 							"a": "1",
 						},
@@ -67,7 +67,7 @@ describe('unit/restore-lockfile.js', () => {
 					"c": {
 						version: "1",
 						integrity: "c",
-						resolved: "http://b",
+						resolved: "https://registry.npmjs.org/c/-/b",
 						requires: {
 							"a": "2",
 						},
@@ -75,7 +75,7 @@ describe('unit/restore-lockfile.js', () => {
 							"a": {
 								version: "2",
 								integrity: "a2",
-								resolved: "http://a/2",
+								resolved: "https://registry.npmjs.org/a/-/2",
 							},
 						},
 					},

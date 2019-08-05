@@ -12,12 +12,12 @@ export function generateA() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "a",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 			},
 			"b": {
 				version: "1",
 				integrity: "b",
-				resolved: "http://b/1",
+				resolved: "https://registry.npmjs.org/b/-/1",
 				requires: {
 					"a": "1",
 				},
@@ -25,7 +25,7 @@ export function generateA() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 				},
@@ -33,7 +33,7 @@ export function generateA() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 				},
 			},
@@ -52,12 +52,12 @@ export function generateA1() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "aa",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 			},
 			"b": {
 				version: "1",
 				integrity: "b",
-				resolved: "http://b/1",
+				resolved: "https://registry.npmjs.org/b/-/1",
 				requires: {
 					"a": "1",
 				},
@@ -65,7 +65,7 @@ export function generateA1() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 				},
@@ -73,7 +73,7 @@ export function generateA1() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2a",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 				},
 			},
@@ -92,12 +92,12 @@ export function generateA2() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "aa",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 			},
 			"b": {
 				version: "2",
 				integrity: "b2",
-				resolved: "http://b/2",
+				resolved: "https://registry.npmjs.org/b/-/2",
 				requires: {
 					"a": "1",
 				},
@@ -105,7 +105,7 @@ export function generateA2() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 				},
@@ -113,7 +113,7 @@ export function generateA2() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2a",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 				},
 			},
@@ -132,7 +132,7 @@ export function generateA3() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "a",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 				requires: {
 					"c": "1",
 				},
@@ -140,7 +140,7 @@ export function generateA3() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 					"d": "2",
@@ -149,19 +149,19 @@ export function generateA3() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 					"d": {
 						version: "2",
 						integrity: "d2",
-						resolved: "http://d/2",
+						resolved: "https://registry.npmjs.org/d/-/2",
 					},
 				},
 			},
 			"d": {
 				version: "1",
 				integrity: "d",
-				resolved: "http://d/1"
+				resolved: "https://registry.npmjs.org/d/-/1"
 			},
 		},
 	}
