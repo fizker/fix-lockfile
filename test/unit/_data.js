@@ -171,11 +171,13 @@ export function getDiffForA_A1() {
 	return [
 		{
 			path: ['a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			hasOtherChanges: false,
 		},
 		{
 			path: ['c', 'a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			hasOtherChanges: false,
 		},
 	]
 }
@@ -184,15 +186,18 @@ export function getDiffForA_A2() {
 	return [
 		{
 			path: ['a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			hasOtherChanges: false,
 		},
 		{
 			path: ['b'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['c', 'a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			hasOtherChanges: false,
 		},
 	]
 }
@@ -200,20 +205,39 @@ export function getDiffForA_A2() {
 export function getDiffForA_A3() {
 	return [
 		{
-			path: ['a', 'c'],
-			integrityOnly: false,
+			path: ['a'],
+			hasIntegrityChanged: false,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['b'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			hasOtherChanges: true,
+		},
+		{
+			path: ['c'],
+			hasIntegrityChanged: false,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['c', 'd'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['d'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			hasOtherChanges: true,
+		},
+	]
+}
+
+export function getDiffForA_A4() {
+	return [
+		{
+			path: ['c'],
+			hasIntegrityChanged: false,
+			hasOtherChanges: false,
 		},
 	]
 }

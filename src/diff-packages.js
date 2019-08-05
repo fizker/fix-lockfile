@@ -4,6 +4,7 @@ import type { Lockfile, Package, Diff } from './types'
 
 export default function(a:Lockfile, b:Lockfile) : $ReadOnlyArray<Diff> {
 	return getDepDiff([], a.dependencies, b.dependencies)
+		.filter(x => x.hasIntegrityChanged || x.hasOtherChanges)
 }
 
 function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [string]:Package }) : $ReadOnlyArray<Diff> {
@@ -16,7 +17,8 @@ function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [st
 		if(!bKeys.has(key)) {
 			diffs.push({
 				path: keyPath,
-				integrityOnly: false,
+				hasIntegrityChanged: true,
+				hasOtherChanges: true,
 			})
 			continue
 		}
@@ -26,67 +28,37 @@ function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [st
 		const aVersion = a[key]
 		const bVersion = b[key]
 
-		if(
-			aVersion.version !== bVersion.version
-			|| aVersion.resolved !== bVersion.resolved
+		const hasIntegrityChanged = aVersion.integrity !== bVersion.integrity
+		const hasOtherChanges =	aVersion.version !== bVersion.version
 			|| aVersion.dev !== bVersion.dev
 			|| aVersion.optional !== bVersion.optional
-		) {
-			diffs.push({
-				path: keyPath,
-				integrityOnly: false,
-			})
-		} else if(aVersion.integrity !== bVersion.integrity) {
-			diffs.push({
-				path: keyPath,
-				integrityOnly: true,
-			})
-		}
+			|| hasReqDiff(aVersion.requires || {}, bVersion.requires || {})
+
+		diffs.push({
+			path: keyPath,
+			hasIntegrityChanged,
+			hasOtherChanges,
+		})
 
 		const depDiff = getDepDiff(keyPath, aVersion.dependencies || {}, bVersion.dependencies || {})
-		const requireDiff = getReqDiff(keyPath, aVersion.requires || {}, bVersion.requires || {})
-			.filter(x => depDiff.find(y => x.path.every(xx => y.path.includes(xx))) == null)
-		const combined = requireDiff.concat(depDiff)
-		diffs.push(...combined)
+		diffs.push(...depDiff)
 	}
 	for(const key of bKeys) {
 		diffs.push({
 			path: path.concat(key),
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			hasOtherChanges: true,
 		})
 	}
 	return diffs
 }
-function getReqDiff(path:$ReadOnlyArray<string>, a:{[string]:string}, b:{[string]:string}) : $ReadOnlyArray<Diff> {
+function hasReqDiff(a:{[string]:string}, b:{[string]:string}) : boolean {
 	const aKeys = Object.keys(a)
 	const bKeys = new Set(Object.keys(b))
 
-	const diffs = []
-
-	for(const key of aKeys) {
-		const keyPath = path.concat(key)
-		if(!bKeys.has(key)) {
-			diffs.push({
-				path: keyPath,
-				integrityOnly: false,
-			})
-			continue
-		}
-
-		bKeys.delete(key)
-
-		if(a[key] !== b[key]) {
-			diffs.push({
-				path: keyPath,
-				integrityOnly: false,
-			})
-		}
+	if(aKeys.length !== bKeys.size) {
+		return true
 	}
-	for(const key of bKeys) {
-		diffs.push({
-			path: path.concat(key),
-			integrityOnly: false,
-		})
-	}
-	return diffs
+
+	return !aKeys.every(x => bKeys.has(x))
 }

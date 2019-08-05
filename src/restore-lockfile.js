@@ -11,7 +11,7 @@ type Params = {
 export default function({ current, original, diffs }: Params) : Lockfile {
 	let output = current
 	for(const diff of diffs) {
-		if(!diff.integrityOnly) {
+		if(diff.hasOtherChanges) {
 			continue
 		}
 
@@ -21,8 +21,10 @@ export default function({ current, original, diffs }: Params) : Lockfile {
 		}
 
 		const [ first, ...rest ] = diff.path
-		const p = output.dependencies[first]
-		const updatedPackage = updateIntegrity(originalPackage.integrity, p, rest)
+		let updatedPackage = output.dependencies[first]
+		if(diff.hasIntegrityChanged) {
+			updatedPackage = updateIntegrity(originalPackage.integrity, updatedPackage, rest)
+		}
 		output = {
 			...output,
 			dependencies: {

@@ -3,7 +3,8 @@
 export type Package = $ReadOnly<{|
 	version: string,
 	integrity: string,
-	resolved: string,
+	resolved?: string,
+	bundled?: boolean,
 	dev?: boolean,
 	optional?: boolean,
 	requires?: { [string]: string },
@@ -18,7 +19,8 @@ export type Lockfile = $ReadOnly<{
 	dependencies: { [string]: Package },
 }>
 
-export type Diff = $ReadOnly<{
+export type Diff = $ReadOnly<{|
 	path: $ReadOnlyArray<string>,
-	integrityOnly: boolean,
-}>
+	hasIntegrityChanged: boolean,
+	hasOtherChanges: boolean,
+|}>
