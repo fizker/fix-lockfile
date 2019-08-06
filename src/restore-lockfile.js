@@ -10,8 +10,21 @@ type Params = {
 
 export default function({ current, original, diffs }: Params) : Lockfile {
 	let output = current
-	for(const diff of diffs) {
-		if(!diff.integrityOnly) {
+	for(let diff of diffs) {
+		const [ first, ...rest ] = diff.path
+		let updatedPackage = output.dependencies[first]
+		if(diff.isURLUsingHTTPForNPMRegistry) {
+			updatedPackage = updateRegistryURL(updatedPackage, rest)
+			output = {
+				...output,
+				dependencies: {
+					...output.dependencies,
+					[first]: updatedPackage,
+				},
+			}
+		}
+
+		if(diff.hasOtherChanges) {
 			continue
 		}
 
@@ -20,9 +33,9 @@ export default function({ current, original, diffs }: Params) : Lockfile {
 			continue
 		}
 
-		const [ first, ...rest ] = diff.path
-		const p = output.dependencies[first]
-		const updatedPackage = updateIntegrity(originalPackage.integrity, p, rest)
+		if(diff.hasIntegrityChanged) {
+			updatedPackage = updateIntegrity(originalPackage.integrity, updatedPackage, rest)
+		}
 		output = {
 			...output,
 			dependencies: {
@@ -66,5 +79,31 @@ function updateIntegrity(integrity:string, p:Package, packagePath:$ReadOnlyArray
 			...p.dependencies,
 			[first]: updateIntegrity(integrity, p.dependencies[first], rest),
 		},
+	}
+}
+
+function updateRegistryURL(pack:Package, packagePath:$ReadOnlyArray<string>) : Package {
+	if(packagePath.length > 0) {
+		if(pack.dependencies == null) {
+			return pack
+		}
+
+		const [ first, ...rest ] = packagePath
+		return {
+			...pack,
+			dependencies: {
+				...pack.dependencies,
+				[first]: updateRegistryURL(pack.dependencies[first], rest),
+			},
+		}
+	}
+
+	if(pack.resolved == null) {
+		return pack
+	}
+
+	return {
+		...pack,
+		resolved: pack.resolved.replace(/^http:/, 'https:'),
 	}
 }

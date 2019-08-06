@@ -5,8 +5,8 @@ import { expect } from 'chai'
 import restore from '../../src/restore-lockfile'
 
 import {
-	generateA, generateA1, generateA2, generateA3,
-	getDiffForA_A1, getDiffForA_A2, getDiffForA_A3
+	generateA, generateA1, generateA2, generateA3, generateA4,
+	getDiffForA_A1, getDiffForA_A2, getDiffForA_A3, getDiffForA_A4,
 } from './_data'
 
 describe('unit/restore-lockfile.js', () => {
@@ -40,6 +40,18 @@ describe('unit/restore-lockfile.js', () => {
 		})
 	})
 
+	describe('restoring a file with URL changes', () => {
+		it('should fix the URLs and keep the other changes', () => {
+			const current = generateA4()
+			const original = generateA()
+			const diffs = getDiffForA_A4()
+
+			const expected = generateA4(true)
+			const actual = restore({ current, original, diffs })
+			expect(actual).to.deep.equal(expected)
+		})
+	})
+
 	describe('restoring a file with mixed changes', () => {
 		it('should restore the integrity-only changes', () => {
 			const current = generateA2()
@@ -54,12 +66,12 @@ describe('unit/restore-lockfile.js', () => {
 					"a": {
 						version: "1",
 						integrity: "a",
-						resolved: "http://a/1",
+						resolved: "https://registry.npmjs.org/a/-/1",
 					},
 					"b": {
 						version: "2",
 						integrity: "b2",
-						resolved: "http://b/2",
+						resolved: "https://registry.npmjs.org/b/-/2",
 						requires: {
 							"a": "1",
 						},
@@ -67,7 +79,7 @@ describe('unit/restore-lockfile.js', () => {
 					"c": {
 						version: "1",
 						integrity: "c",
-						resolved: "http://b",
+						resolved: "https://registry.npmjs.org/c/-/b",
 						requires: {
 							"a": "2",
 						},
@@ -75,7 +87,7 @@ describe('unit/restore-lockfile.js', () => {
 							"a": {
 								version: "2",
 								integrity: "a2",
-								resolved: "http://a/2",
+								resolved: "https://registry.npmjs.org/a/-/2",
 							},
 						},
 					},

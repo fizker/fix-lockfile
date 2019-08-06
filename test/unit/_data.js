@@ -1,6 +1,6 @@
 // @flow
 
-import type { Lockfile } from '../../src/types'
+import type { Lockfile, Diff } from '../../src/types'
 
 export function generateA() : Lockfile {
 	return {
@@ -12,12 +12,12 @@ export function generateA() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "a",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 			},
 			"b": {
 				version: "1",
 				integrity: "b",
-				resolved: "http://b/1",
+				resolved: "https://registry.npmjs.org/b/-/1",
 				requires: {
 					"a": "1",
 				},
@@ -25,7 +25,7 @@ export function generateA() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 				},
@@ -33,7 +33,7 @@ export function generateA() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 				},
 			},
@@ -52,12 +52,12 @@ export function generateA1() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "aa",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 			},
 			"b": {
 				version: "1",
 				integrity: "b",
-				resolved: "http://b/1",
+				resolved: "https://registry.npmjs.org/b/-/1",
 				requires: {
 					"a": "1",
 				},
@@ -65,7 +65,7 @@ export function generateA1() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 				},
@@ -73,7 +73,7 @@ export function generateA1() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2a",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 				},
 			},
@@ -92,12 +92,12 @@ export function generateA2() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "aa",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 			},
 			"b": {
 				version: "2",
 				integrity: "b2",
-				resolved: "http://b/2",
+				resolved: "https://registry.npmjs.org/b/-/2",
 				requires: {
 					"a": "1",
 				},
@@ -105,7 +105,7 @@ export function generateA2() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 				},
@@ -113,7 +113,7 @@ export function generateA2() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2a",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 				},
 			},
@@ -132,7 +132,7 @@ export function generateA3() : Lockfile {
 			"a": {
 				version: "1",
 				integrity: "a",
-				resolved: "http://a/1",
+				resolved: "https://registry.npmjs.org/a/-/1",
 				requires: {
 					"c": "1",
 				},
@@ -140,7 +140,7 @@ export function generateA3() : Lockfile {
 			"c": {
 				version: "1",
 				integrity: "c",
-				resolved: "http://b",
+				resolved: "https://registry.npmjs.org/c/-/b",
 				requires: {
 					"a": "2",
 					"d": "2",
@@ -149,71 +149,160 @@ export function generateA3() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2",
-						resolved: "http://a/2",
+						resolved: "https://registry.npmjs.org/a/-/2",
 					},
 					"d": {
 						version: "2",
 						integrity: "d2",
-						resolved: "http://d/2",
+						resolved: "https://registry.npmjs.org/d/-/2",
 					},
 				},
 			},
 			"d": {
 				version: "1",
 				integrity: "d",
-				resolved: "http://d/1"
+				resolved: "https://registry.npmjs.org/d/-/1"
 			},
 		},
 	}
 }
 
-export function getDiffForA_A1() {
+// This is A with some resolved URLs in http:
+export function generateA4(fixURLs:boolean = false) : Lockfile {
+	return {
+		name: 'A',
+		version: '1.0.0',
+		lockfileVersion: 1,
+		requires: true,
+		dependencies: {
+			"a": {
+				version: "2",
+				integrity: "aa",
+				resolved: "https://registry.npmjs.org/a/-/2",
+			},
+			"b": {
+				version: "1",
+				integrity: "b",
+				resolved: "https://registry.npmjs.org/b/-/1",
+				requires: {
+					"a": "1",
+				},
+			},
+			"c": {
+				version: "2",
+				integrity: "cc",
+				resolved: `http${fixURLs?"s":""}://registry.npmjs.org/c/-/b2`,
+				requires: {
+					"a": "2",
+				},
+				dependencies: {
+					"a": {
+						version: "2",
+						integrity: "a2",
+						resolved: `http${fixURLs?"s":""}://registry.npmjs.org/a/-/2`,
+					},
+				},
+			},
+		},
+	}
+}
+
+export function getDiffForA_A1() : $ReadOnlyArray<Diff> {
 	return [
 		{
 			path: ['a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: false,
 		},
 		{
 			path: ['c', 'a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: false,
 		},
 	]
 }
 
-export function getDiffForA_A2() {
+export function getDiffForA_A2() : $ReadOnlyArray<Diff> {
 	return [
 		{
 			path: ['a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: false,
 		},
 		{
 			path: ['b'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['c', 'a'],
-			integrityOnly: true,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: false,
 		},
 	]
 }
 
-export function getDiffForA_A3() {
+export function getDiffForA_A3() : $ReadOnlyArray<Diff> {
 	return [
 		{
-			path: ['a', 'c'],
-			integrityOnly: false,
+			path: ['a'],
+			hasIntegrityChanged: false,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['b'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
+		},
+		{
+			path: ['c'],
+			hasIntegrityChanged: false,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['c', 'd'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
 		},
 		{
 			path: ['d'],
-			integrityOnly: false,
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
 		},
 	]
+}
+
+export function getDiffForA_A4(includeURLError:boolean = true) : $ReadOnlyArray<Diff> {
+	return [
+		{
+			path: ['a'],
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
+		},
+		{
+			path: ['c'],
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: includeURLError,
+			hasOtherChanges: true,
+		},
+		includeURLError
+		? {
+			path: ['c', 'a'],
+			hasIntegrityChanged: false,
+			isURLUsingHTTPForNPMRegistry: true,
+			hasOtherChanges: false,
+		}
+		: null,
+	].filter(Boolean)
 }
