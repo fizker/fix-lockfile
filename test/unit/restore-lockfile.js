@@ -5,8 +5,8 @@ import { expect } from 'chai'
 import restore from '../../src/restore-lockfile'
 
 import {
-	generateA, generateA1, generateA2, generateA3,
-	getDiffForA_A1, getDiffForA_A2, getDiffForA_A3
+	generateA, generateA1, generateA2, generateA3, generateA4,
+	getDiffForA_A1, getDiffForA_A2, getDiffForA_A3, getDiffForA_A4,
 } from './_data'
 
 describe('unit/restore-lockfile.js', () => {
@@ -37,6 +37,18 @@ describe('unit/restore-lockfile.js', () => {
 			const diffs = getDiffForA_A3()
 			const restored = restore({ current, original, diffs })
 			expect(restored).to.deep.equal(current)
+		})
+	})
+
+	describe('restoring a file with URL changes', () => {
+		it('should fix the URLs and keep the other changes', () => {
+			const current = generateA4()
+			const original = generateA()
+			const diffs = getDiffForA_A4()
+
+			const expected = generateA4(true)
+			const actual = restore({ current, original, diffs })
+			expect(actual).to.deep.equal(expected)
 		})
 	})
 

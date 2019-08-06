@@ -168,7 +168,7 @@ export function generateA3() : Lockfile {
 }
 
 // This is A with some resolved URLs in http:
-export function generateA4() : Lockfile {
+export function generateA4(fixURLs:boolean = false) : Lockfile {
 	return {
 		name: 'A',
 		version: '1.0.0',
@@ -176,9 +176,9 @@ export function generateA4() : Lockfile {
 		requires: true,
 		dependencies: {
 			"a": {
-				version: "1",
-				integrity: "a",
-				resolved: "https://registry.npmjs.org/a/-/1",
+				version: "2",
+				integrity: "aa",
+				resolved: "https://registry.npmjs.org/a/-/2",
 			},
 			"b": {
 				version: "1",
@@ -189,9 +189,9 @@ export function generateA4() : Lockfile {
 				},
 			},
 			"c": {
-				version: "1",
-				integrity: "c",
-				resolved: "http://registry.npmjs.org/c/-/b",
+				version: "2",
+				integrity: "cc",
+				resolved: `http${fixURLs?"s":""}://registry.npmjs.org/c/-/b2`,
 				requires: {
 					"a": "2",
 				},
@@ -199,7 +199,7 @@ export function generateA4() : Lockfile {
 					"a": {
 						version: "2",
 						integrity: "a2",
-						resolved: "https://registry.npmjs.org/a/-/2",
+						resolved: `http${fixURLs?"s":""}://registry.npmjs.org/a/-/2`,
 					},
 				},
 			},
@@ -282,13 +282,27 @@ export function getDiffForA_A3() : $ReadOnlyArray<Diff> {
 	]
 }
 
-export function getDiffForA_A4() : $ReadOnlyArray<Diff> {
+export function getDiffForA_A4(includeURLError:boolean = true) : $ReadOnlyArray<Diff> {
 	return [
 		{
+			path: ['a'],
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
+			hasOtherChanges: true,
+		},
+		{
 			path: ['c'],
+			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: includeURLError,
+			hasOtherChanges: true,
+		},
+		includeURLError
+		? {
+			path: ['c', 'a'],
 			hasIntegrityChanged: false,
 			isURLUsingHTTPForNPMRegistry: true,
 			hasOtherChanges: false,
-		},
-	]
+		}
+		: null,
+	].filter(Boolean)
 }
