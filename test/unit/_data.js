@@ -1,6 +1,6 @@
 // @flow
 
-import type { Lockfile } from '../../src/types'
+import type { Lockfile, Diff } from '../../src/types'
 
 export function generateA() : Lockfile {
 	return {
@@ -207,7 +207,7 @@ export function generateA4() : Lockfile {
 	}
 }
 
-export function getDiffForA_A1() {
+export function getDiffForA_A1() : $ReadOnlyArray<Diff> {
 	return [
 		{
 			path: ['a'],
@@ -224,7 +224,7 @@ export function getDiffForA_A1() {
 	]
 }
 
-export function getDiffForA_A2() {
+export function getDiffForA_A2() : $ReadOnlyArray<Diff> {
 	return [
 		{
 			path: ['a'],
@@ -247,7 +247,7 @@ export function getDiffForA_A2() {
 	]
 }
 
-export function getDiffForA_A3() {
+export function getDiffForA_A3() : $ReadOnlyArray<Diff> {
 	return [
 		{
 			path: ['a'],
@@ -282,7 +282,7 @@ export function getDiffForA_A3() {
 	]
 }
 
-export function getDiffForA_A4() {
+export function getDiffForA_A4() : $ReadOnlyArray<Diff> {
 	return [
 		{
 			path: ['c'],

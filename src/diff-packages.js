@@ -84,3 +84,23 @@ function hasReqDiff(a:{[string]:string}, b:{[string]:string}) : boolean {
 
 	return !aKeys.every(x => bKeys.has(x))
 }
+
+export function sortDiff(diff:$ReadOnlyArray<Diff>) : $ReadOnlyArray<Diff> {
+	return diff.slice().sort((a, b) => {
+		for(let index = 0; index < a.path.length; index++) {
+			if(b.path[index] == null) {
+				break
+			}
+
+			if(a.path[index] === b.path[index]) {
+				continue
+			}
+
+			return a.path[index] < b.path[index]
+				? -1
+				: 1
+		}
+
+		return a.path.length - b.path.length
+	})
+}
