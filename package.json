@@ -7,7 +7,8 @@
   "scripts": {
     "test": "mocha",
     "build": "rm -rf dist && babel src -d dist",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "postshrinkwrap": "./cli.js package-lock.json"
   },
   "dependencies": {},
   "devDependencies": {
