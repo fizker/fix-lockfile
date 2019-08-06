@@ -4,7 +4,25 @@ import type { Lockfile, Package, Diff } from './types'
 
 export default function(a:Lockfile, b:Lockfile) : $ReadOnlyArray<Diff> {
 	return getDepDiff([], a.dependencies, b.dependencies)
-		.filter(x => x.hasIntegrityChanged || x.hasOtherChanges)
+		.filter(x => x.isURLUsingHTTPForNPMRegistry || x.hasIntegrityChanged || x.hasOtherChanges)
+}
+
+function compareResolvedToNPMRegistry(aResolved:?string, bResolved:?string) : 'https-only'|'different'|'same' {
+	if(aResolved == bResolved) {
+		return 'same'
+	}
+
+	if(aResolved == null || bResolved == null) {
+		return 'different'
+	}
+
+	return true
+		&& (aResolved.startsWith('http://registry.npmjs.org')
+			|| bResolved.startsWith('http://registry.npmjs.org')
+		)
+		&& aResolved.replace(/^https?/, '') === bResolved.replace(/^https?/, '')
+	? 'https-only'
+	: 'different'
 }
 
 function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [string]:Package }) : $ReadOnlyArray<Diff> {
@@ -17,6 +35,7 @@ function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [st
 		if(!bKeys.has(key)) {
 			diffs.push({
 				path: keyPath,
+				isURLUsingHTTPForNPMRegistry: false,
 				hasIntegrityChanged: true,
 				hasOtherChanges: true,
 			})
@@ -29,6 +48,7 @@ function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [st
 		const bVersion = b[key]
 
 		const hasIntegrityChanged = aVersion.integrity !== bVersion.integrity
+		const isURLUsingHTTPForNPMRegistry = compareResolvedToNPMRegistry(aVersion.resolved, bVersion.resolved) === 'https-only'
 		const hasOtherChanges =	aVersion.version !== bVersion.version
 			|| aVersion.dev !== bVersion.dev
 			|| aVersion.optional !== bVersion.optional
@@ -37,6 +57,7 @@ function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [st
 		diffs.push({
 			path: keyPath,
 			hasIntegrityChanged,
+			isURLUsingHTTPForNPMRegistry,
 			hasOtherChanges,
 		})
 
@@ -46,6 +67,7 @@ function getDepDiff(path:$ReadOnlyArray<string>, a:{ [string]:Package }, b:{ [st
 	for(const key of bKeys) {
 		diffs.push({
 			path: path.concat(key),
+			isURLUsingHTTPForNPMRegistry: false,
 			hasIntegrityChanged: true,
 			hasOtherChanges: true,
 		})

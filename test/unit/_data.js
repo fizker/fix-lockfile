@@ -167,16 +167,58 @@ export function generateA3() : Lockfile {
 	}
 }
 
+// This is A with some resolved URLs in http:
+export function generateA4() : Lockfile {
+	return {
+		name: 'A',
+		version: '1.0.0',
+		lockfileVersion: 1,
+		requires: true,
+		dependencies: {
+			"a": {
+				version: "1",
+				integrity: "a",
+				resolved: "https://registry.npmjs.org/a/-/1",
+			},
+			"b": {
+				version: "1",
+				integrity: "b",
+				resolved: "https://registry.npmjs.org/b/-/1",
+				requires: {
+					"a": "1",
+				},
+			},
+			"c": {
+				version: "1",
+				integrity: "c",
+				resolved: "http://registry.npmjs.org/c/-/b",
+				requires: {
+					"a": "2",
+				},
+				dependencies: {
+					"a": {
+						version: "2",
+						integrity: "a2",
+						resolved: "https://registry.npmjs.org/a/-/2",
+					},
+				},
+			},
+		},
+	}
+}
+
 export function getDiffForA_A1() {
 	return [
 		{
 			path: ['a'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: false,
 		},
 		{
 			path: ['c', 'a'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: false,
 		},
 	]
@@ -187,16 +229,19 @@ export function getDiffForA_A2() {
 		{
 			path: ['a'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: false,
 		},
 		{
 			path: ['b'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: true,
 		},
 		{
 			path: ['c', 'a'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: false,
 		},
 	]
@@ -207,26 +252,31 @@ export function getDiffForA_A3() {
 		{
 			path: ['a'],
 			hasIntegrityChanged: false,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: true,
 		},
 		{
 			path: ['b'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: true,
 		},
 		{
 			path: ['c'],
 			hasIntegrityChanged: false,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: true,
 		},
 		{
 			path: ['c', 'd'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: true,
 		},
 		{
 			path: ['d'],
 			hasIntegrityChanged: true,
+			isURLUsingHTTPForNPMRegistry: false,
 			hasOtherChanges: true,
 		},
 	]
@@ -237,6 +287,7 @@ export function getDiffForA_A4() {
 		{
 			path: ['c'],
 			hasIntegrityChanged: false,
+			isURLUsingHTTPForNPMRegistry: true,
 			hasOtherChanges: false,
 		},
 	]

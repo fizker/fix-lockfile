@@ -22,5 +22,6 @@ export type Lockfile = $ReadOnly<{
 export type Diff = $ReadOnly<{|
 	path: $ReadOnlyArray<string>,
 	hasIntegrityChanged: boolean,
+	isURLUsingHTTPForNPMRegistry: boolean,
 	hasOtherChanges: boolean,
 |}>

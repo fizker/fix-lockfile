@@ -7,8 +7,8 @@ import diff from '../../src/diff-packages'
 import type { Lockfile, Package } from '../../src/types'
 
 import {
-	generateA, generateA1, generateA2, generateA3,
-	getDiffForA_A1, getDiffForA_A2, getDiffForA_A3,
+	generateA, generateA1, generateA2, generateA3, generateA4,
+	getDiffForA_A1, getDiffForA_A2, getDiffForA_A3, getDiffForA_A4,
 } from './_data'
 
 describe('unit/diff-packages.js', () => {
@@ -36,6 +36,13 @@ describe('unit/diff-packages.js', () => {
 		it('should return the expected differences', () => {
 			const expected = getDiffForA_A3()
 			const actual = diff(generateA(), generateA3())
+			expect(actual).to.deep.equal(expected)
+		})
+	})
+	describe('diffing http: URL (A -> A4)', () => {
+		it('should return the expected differences', () => {
+			const expected = getDiffForA_A4()
+			const actual = diff(generateA(), generateA4())
 			expect(actual).to.deep.equal(expected)
 		})
 	})
