@@ -20,7 +20,7 @@
     "chai": "^4.2.0",
     "flow-bin": "^0.89.0",
     "flow-typed": "^2.6.1",
-    "mocha": "^5.2.0"
+    "mocha": "^6.2.0"
   },
   "keywords": [
     "npm",
