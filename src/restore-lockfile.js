@@ -98,7 +98,7 @@ function updateRegistryURL(pack:Package, packagePath:$ReadOnlyArray<string>) : P
 		}
 	}
 
-	if(pack.resolved == null) {
+	if(pack.resolved == null || typeof pack.resolved !== 'string') {
 		return pack
 	}
 

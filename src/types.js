@@ -3,7 +3,7 @@
 export type Package = $ReadOnly<{|
 	version: string,
 	integrity: string,
-	resolved?: string,
+	resolved?: string|boolean,
 	bundled?: boolean,
 	dev?: boolean,
 	optional?: boolean,

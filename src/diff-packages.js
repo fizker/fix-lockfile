@@ -7,8 +7,8 @@ export default function(a:Lockfile, b:Lockfile) : $ReadOnlyArray<Diff> {
 		.filter(x => x.isURLUsingHTTPForNPMRegistry || x.hasIntegrityChanged || x.hasOtherChanges)
 }
 
-function isURLUsingHTTPForNPM(url:?string) {
-	if(url == null) {
+function isURLUsingHTTPForNPM(url:?string|boolean) {
+	if(url == null || typeof url !== 'string') {
 		return false
 	}
 	return url.startsWith('http://registry.npmjs.org')
