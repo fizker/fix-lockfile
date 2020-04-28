@@ -1,6 +1,6 @@
 {
   "name": "@fizker/fix-lockfile",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A tool for fixing some of the worst of the npm shrinkwrap noise",
   "main": "index.js",
   "bin": "./cli.js",
